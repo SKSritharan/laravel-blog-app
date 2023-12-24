@@ -25,4 +25,6 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    Route::get('/manage-posts', App\Livewire\Post\Index::class);
 });
