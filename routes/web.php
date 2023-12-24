@@ -17,6 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::get('/post/{id}', \App\Livewire\Post\SinglePost::class)->name('single-post');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
