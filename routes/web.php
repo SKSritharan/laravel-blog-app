@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::middleware([
     'auth:sanctum',
@@ -26,5 +26,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/manage-posts', App\Livewire\Post\Index::class);
+    Route::get('/manage-posts', function () {
+        return view('manage-posts');
+    })->name('manage-posts');
 });
