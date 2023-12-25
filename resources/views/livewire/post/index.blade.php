@@ -1,10 +1,21 @@
 <div>
     <x-wireui-modal.card title="Add a Post" blur wire:model.defer="isModalOpen">
+        @if($img_url)
+            <div class="text-center">
+                <img class="h-64 max-w-lg mx-auto rounded-lg"  src="{{ asset('storage/' . $img_url) }}" alt="place image">
+            </div>
+        @endif
         <div class="grid grid-cols-1 gap-10 mb-6">
             <x-wireui-input label="Title" placeholder="Post Title" wire:model="title"/>
         </div>
         <div class="grid grid-cols-1 gap-10 mb-6">
             <x-wireui-textarea label="Content" placeholder="Post Content" wire:model="content"/>
+        </div>
+        <div class="w-full mb-6">
+            <x-filepond label="Image" wire:model="img_url"/>
+            @error('img_url')
+            <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+            @enderror
         </div>
         <x-slot name="footer">
             <div class="flex justify-end">

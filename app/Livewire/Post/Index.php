@@ -4,12 +4,13 @@ namespace App\Livewire\Post;
 
 use App\Models\Post;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
 
 class Index extends Component
 {
-    use Actions;
-    public $user_id, $post_id, $title, $content;
+    use Actions, WithFileUploads;
+    public $user_id, $post_id, $title, $content, $img_url;
     public $isModalOpen = false;
 
     public $search = '';
@@ -45,19 +46,24 @@ class Index extends Component
         $this->post_id = null;
         $this->title = '';
         $this->content = '';
+        $this->img_url=null;
     }
 
     public function store()
     {
         $this->validate([
-            'title' => 'required',
+            'title' => 'required|max:100',
             'content' => 'required',
+            'img_url' =>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        $imagePath = $this->img_url->store('posts', 'public');
 
         Post::updateOrCreate(['id' => $this->post_id], [
             'user_id' => $this->user_id,
             'title' => $this->title,
             'content' => $this->content,
+            'img_url' => $imagePath,
         ]);
 
         $this->notification()->success(
@@ -75,6 +81,7 @@ class Index extends Component
         $this->post_id = $id;
         $this->title = $post->title;
         $this->content = $post->content;
+        $this->img_url = $post->img_url;
 
         $this->openModalPopover();
     }

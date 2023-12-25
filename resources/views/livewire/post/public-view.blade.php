@@ -43,6 +43,13 @@
                             </div>
                         </div>
 
+                        <div class="flex justify-center">
+
+                            <img src="{{ asset('storage/' . $post->img_url) }}"
+                                 alt="post image"
+                                 class="h-64 max-w-lg mx-auto my-2 rounded-lg">
+                        </div>
+
                         <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm leading-relaxed text-justify">
                             {{ Str::limit($post->content, 350) }}
                         </p>
