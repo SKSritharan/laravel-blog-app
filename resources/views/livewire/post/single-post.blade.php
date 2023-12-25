@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+            <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm leading-relaxed text-justify">
                 {{$post->content}}
             </p>
 
@@ -44,9 +44,23 @@
                 <x-wireui-button primary label="Post comment" wire:click="store" class="flex my-2 justify-end"/>
             </div>
 
+            <div class="flex justify-end my-6 items-center">
+                <div class="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="text-gray-900 dark:text-white">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        <path d="M13 8H7"/>
+                        <path d="M17 12H7"/>
+                    </svg>
+                    <span class="text-gray-500 dark:text-gray-300 text-sm">{{ $post->comments->count() }} Comments</span>
+                </div>
+            </div>
+
             @if($post->comments)
                 @foreach($post->comments as $comment)
-                    <div class="border border-slate-600 p-4 mb-4 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none">
+                    <div
+                        class="border border-slate-600 p-4 mb-4 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none">
                         <div class="flex justify-between mt-4">
                             <div class="flex items-center space-x-2">
                                 @if ($comment->user)
