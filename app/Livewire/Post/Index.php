@@ -3,6 +3,8 @@
 namespace App\Livewire\Post;
 
 use App\Models\Post;
+use App\Notifications\NewPostNotification;
+use App\Notifications\PostUpdateNotification;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
@@ -59,12 +61,21 @@ class Index extends Component
 
         $imagePath = $this->img_url->store('posts', 'public');
 
-        Post::updateOrCreate(['id' => $this->post_id], [
+        $post = Post::updateOrCreate(['id' => $this->post_id], [
             'user_id' => $this->user_id,
             'title' => $this->title,
             'content' => $this->content,
             'img_url' => $imagePath,
         ]);
+
+        // Check if the post was recently created
+        if ($post->wasRecentlyCreated) {
+            // Notify the post owner about the new Post
+            $post->author->notify(new NewPostNotification($post));
+        } else {
+            // Notify the post owner about the updated Post
+            $post->author->notify(new PostUpdateNotification($post));
+        }
 
         $this->notification()->success(
             $title = $this->post_id ? 'Post updated.' : 'Post created.',
@@ -82,6 +93,8 @@ class Index extends Component
         $this->title = $post->title;
         $this->content = $post->content;
         $this->img_url = $post->img_url;
+
+        dd($this->img_url);
 
         $this->openModalPopover();
     }
